@@ -82,7 +82,8 @@ function runSetupCommands() {
     "bun add react-parallax@^3.5.0",
     "bun add @react-three/fiber@^8.17.8",
     "bun add @react-three/drei@^9.115.0",
-    "bun add react-player@^2.16.0"
+    "bun add react-player@^2.16.0",
+    "bun install embla-carousel-autoplay"
 ];
     
     if (commands.length === 0) {
