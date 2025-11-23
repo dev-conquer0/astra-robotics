@@ -49,7 +49,7 @@ export function Hero({ onBookDemo, onBuyNow }: HeroProps) {
         >
           <Button
             size="lg"
-            className="bg-sky-500 hover:bg-sky-600 text-white font-bold px-8 py-6 text-lg transition-all duration-300 transform hover:scale-105"
+            className="bg-sky-500 hover:bg-sky-600 text-white font-bold px-8 py-6 text-lg transition-all duration-300 transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 focus-visible:ring-offset-black/50"
             onClick={onBuyNow}
           >
             <ShoppingCart className="mr-2 h-5 w-5" /> Buy Now
@@ -57,7 +57,7 @@ export function Hero({ onBookDemo, onBuyNow }: HeroProps) {
           <Button
             size="lg"
             variant="outline"
-            className="border-2 border-white text-white bg-transparent hover:bg-white hover:text-black font-bold px-8 py-6 text-lg transition-all duration-300 transform hover:scale-105"
+            className="border-2 border-white text-white bg-transparent hover:bg-white hover:text-black font-bold px-8 py-6 text-lg transition-all duration-300 transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/50"
             onClick={onBookDemo}
           >
             <PlayCircle className="mr-2 h-5 w-5" /> Book a Live Demo
@@ -67,7 +67,7 @@ export function Hero({ onBookDemo, onBuyNow }: HeroProps) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.5, repeat: Infinity, repeatType: 'reverse' }}
+        transition={{ duration: 1, delay: 1.5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2"
       >
         <ArrowDown className="h-8 w-8" />

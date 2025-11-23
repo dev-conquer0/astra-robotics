@@ -6,12 +6,19 @@ export function userRoutes(app: Hono<{ Bindings: Env }>) {
     // Mock endpoint for booking a demo
     app.post('/api/book-demo', async (c) => {
         const body = await c.req.json().catch(() => ({}));
-        console.log('Demo booking request:', body);
+        console.log('Demo booking request received:', JSON.stringify(body, null, 2));
         // Basic validation
         if (!body.email || !body.name || !body.preferredTime) {
-            return c.json({ success: false, error: 'Missing required fields' }, 400);
+            return c.json({ success: false, error: 'Missing required fields: name, email, and preferredTime are required.' }, 400);
         }
-        return c.json({ success: true, data: { message: 'Demo booked successfully!', bookingId: `ASTRA-${Date.now()}` } });
+        return c.json({ 
+            success: true, 
+            data: { 
+                message: 'Demo booked successfully!', 
+                bookingId: `ASTRA-${Date.now()}`,
+                confirmationLink: `mock-calendar-link-for-${body.email}`
+            } 
+        });
     });
     // Mock endpoint for initiating a payment
     app.post('/api/initiate-payment', async (c) => {
@@ -20,7 +27,14 @@ export function userRoutes(app: Hono<{ Bindings: Env }>) {
         if (!body.plan) {
             return c.json({ success: false, error: 'Plan is required' }, 400);
         }
-        return c.json({ success: true, data: { message: 'Payment initiated.', paymentToken: `mock_token_${Math.random().toString(36).substring(2)}`, estimatedDelivery: '4-6 weeks' } });
+        return c.json({ 
+            success: true, 
+            data: { 
+                message: 'Payment initiated.', 
+                paymentToken: `mock_token_${Math.random().toString(36).substring(2)}`, 
+                estimatedDelivery: '4-6 weeks' 
+            } 
+        });
     });
     // Mock endpoint for newsletter/contact form
     app.post('/api/contact', async (c) => {
@@ -29,6 +43,11 @@ export function userRoutes(app: Hono<{ Bindings: Env }>) {
         if (!body.email) {
             return c.json({ success: false, error: 'Email is required' }, 400);
         }
-        return c.json({ success: true, data: { message: 'Thank you for subscribing!' } });
+        return c.json({ 
+            success: true, 
+            data: { 
+                message: 'Thank you for subscribing!' 
+            } 
+        });
     });
 }

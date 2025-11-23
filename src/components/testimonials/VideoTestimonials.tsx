@@ -49,20 +49,15 @@ export function VideoTestimonials() {
             {testimonials.map((testimonial, index) => (
               <CarouselItem key={index} className="md:basis-1/2">
                 <div className="p-2 h-full">
-                  <Card className="overflow-hidden h-full flex flex-col rounded-2xl shadow-soft dark:bg-slate-900/50">
+                  <Card className="overflow-hidden h-full flex flex-col">
                     <div className="aspect-video relative">
                       <video
-                        key={testimonial.videoUrl}
                         className="w-full h-full object-cover"
                         poster={testimonial.posterUrl}
                         autoPlay
                         loop
                         muted
                         playsInline
-                        onError={(e) => {
-                          console.error("Video failed to load", e);
-                          (e.target as HTMLVideoElement).style.display = 'none';
-                        }}
                       >
                         <source src={testimonial.videoUrl} type="video/mp4" />
                       </video>
@@ -80,8 +75,8 @@ export function VideoTestimonials() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="hidden sm:flex left-[-50px]" />
-          <CarouselNext className="hidden sm:flex right-[-50px]" />
+          <CarouselPrevious className="hidden sm:flex" />
+          <CarouselNext className="hidden sm:flex" />
         </Carousel>
       </div>
     </section>

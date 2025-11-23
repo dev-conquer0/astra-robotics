@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, Variants } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Button } from '@/components/ui/button';
 import { PlayCircle } from 'lucide-react';
@@ -10,9 +10,9 @@ export function DemoSection() {
     triggerOnce: true,
     threshold: 0.3,
   });
-  const variants: Variants = {
+  const variants = {
     hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: ['easeOut'] } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
   };
   return (
     <>
@@ -25,10 +25,6 @@ export function DemoSection() {
             loop
             muted
             playsInline
-            onError={(e) => {
-              console.error("Background video failed to load", e);
-              (e.target as HTMLVideoElement).style.display = 'none';
-            }}
           >
             <source src="https://videos.pexels.com/video-files/4782135/4782135-hd_1920_1080_25fps.mp4" type="video/mp4" />
           </video>
@@ -46,7 +42,7 @@ export function DemoSection() {
           </p>
           <Button
             size="lg"
-            className="mt-8 bg-transparent border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105 px-8 py-6 text-lg focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/50"
+            className="mt-8 bg-transparent border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105 px-8 py-6 text-lg"
             onClick={() => setDemoModalOpen(true)}
           >
             <PlayCircle className="mr-2 h-6 w-6" />
