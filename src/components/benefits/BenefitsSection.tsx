@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Cpu, Zap, ShieldCheck, Clock, DollarSign, Repeat } from 'lucide-react';
@@ -20,7 +21,7 @@ const containerVariants: Variants = {
 };
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 50, scale: 0.95 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: ['easeOut'] } },
 };
 export function BenefitsSection() {
   const { ref, inView } = useInView({
