@@ -77,15 +77,7 @@ function updateWranglerJsonc() {
 }
 
 function runSetupCommands() {
-    const commands = [
-    "bun add react-intersection-observer@^9.10.2",
-    "bun add react-parallax@^3.5.0",
-    "bun add @react-three/fiber@^8.17.8",
-    "bun add @react-three/drei@^9.115.0",
-    "bun add react-player@^2.16.0",
-    "bun install embla-carousel-autoplay",
-    "bun add embla-carousel-autoplay"
-];
+    const commands = [];
     
     if (commands.length === 0) {
         console.log('⊘ No setup commands to run');
