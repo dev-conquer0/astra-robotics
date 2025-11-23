@@ -1,148 +1,91 @@
-// Home page of the app, Currently a demo page for demonstration.
-// Please rewrite this file to implement your own logic. Do not replace or delete it, simply rewrite this HomePage.tsx file.
-import { useEffect } from 'react'
-import { Sparkles } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ThemeToggle } from '@/components/ThemeToggle'
-import { Toaster, toast } from '@/components/ui/sonner'
-import { create } from 'zustand'
-import { useShallow } from 'zustand/react/shallow'
-import { AppLayout } from '@/components/layout/AppLayout'
-
-// Timer store: independent slice with a clear, minimal API, for demonstration
-type TimerState = {
-  isRunning: boolean;
-  elapsedMs: number;
-  start: () => void;
-  pause: () => void;
-  reset: () => void;
-  tick: (deltaMs: number) => void;
-}
-
-const useTimerStore = create<TimerState>((set) => ({
-  isRunning: false,
-  elapsedMs: 0,
-  start: () => set({ isRunning: true }),
-  pause: () => set({ isRunning: false }),
-  reset: () => set({ elapsedMs: 0, isRunning: false }),
-  tick: (deltaMs) => set((s) => ({ elapsedMs: s.elapsedMs + deltaMs })),
-}))
-
-// Counter store: separate slice to showcase multiple stores without coupling
-type CounterState = {
-  count: number;
-  inc: () => void;
-  reset: () => void;
-}
-
-const useCounterStore = create<CounterState>((set) => ({
-  count: 0,
-  inc: () => set((s) => ({ count: s.count + 1 })),
-  reset: () => set({ count: 0 }),
-}))
-
-function formatDuration(ms: number): string {
-  const total = Math.max(0, Math.floor(ms / 1000))
-  const m = Math.floor(total / 60)
-  const s = total % 60
-  return `${m}:${s.toString().padStart(2, '0')}`
-}
-
-export function HomePage() {
-  // Select only what is needed to avoid unnecessary re-renders
-  const { isRunning, elapsedMs } = useTimerStore(
-    useShallow((s) => ({ isRunning: s.isRunning, elapsedMs: s.elapsedMs })),
-  )
-  const start = useTimerStore((s) => s.start)
-  const pause = useTimerStore((s) => s.pause)
-  const resetTimer = useTimerStore((s) => s.reset)
-  const count = useCounterStore((s) => s.count)
-  const inc = useCounterStore((s) => s.inc)
-  const resetCount = useCounterStore((s) => s.reset)
-
-  // Drive the timer only while running; avoid update-depth issues with a scoped RAF
-  useEffect(() => {
-    if (!isRunning) return
-    let raf = 0
-    let last = performance.now()
-    const loop = () => {
-      const now = performance.now()
-      const delta = now - last
-      last = now
-      // Read store API directly to keep effect deps minimal and stable
-      useTimerStore.getState().tick(delta)
-      raf = requestAnimationFrame(loop)
-    }
-    raf = requestAnimationFrame(loop)
-    return () => cancelAnimationFrame(raf)
-  }, [isRunning])
-
-  const onPleaseWait = () => {
-    inc()
-    if (!isRunning) {
-      start()
-      toast.success('Building your app…', {
-        description: 'Hang tight, we\'re setting everything up.',
-      })
-    } else {
-      pause()
-      toast.info('Taking a short pause', {
-        description: 'We\'ll continue shortly.',
-      })
-    }
-  }
-
-  const formatted = formatDuration(elapsedMs)
-
+import { useState } from 'react';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { Toaster } from '@/components/ui/sonner';
+import { Hero } from '@/components/hero/Hero';
+import { ProductShowcase } from '@/components/product/ProductShowcase';
+import { DemoModal } from '@/components/DemoModal';
+import { PricingTable } from '@/components/PricingTable';
+import { Testimonials } from '@/components/Testimonials';
+import { Footer } from '@/components/Footer';
+import { Check, Cpu, ShieldCheck } from 'lucide-react';
+function StoryVisionSection() {
   return (
-    <AppLayout>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-4 overflow-hidden relative">
-        <ThemeToggle />
-        <div className="absolute inset-0 bg-gradient-rainbow opacity-10 dark:opacity-20 pointer-events-none" />
-        <div className="text-center space-y-8 relative z-10 animate-fade-in">
-          <div className="flex justify-center">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-primary floating">
-              <Sparkles className="w-8 h-8 text-white rotating" />
-            </div>
+    <section className="py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-semibold">Our Vision for a Better Future</h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              At Astra, we believe in the power of robotics to augment human potential. Our mission is to create intelligent, reliable, and accessible humanoid robots that seamlessly integrate into our daily lives, freeing us to focus on what truly matters: creativity, connection, and progress.
+            </p>
           </div>
-          <h1 className="text-5xl md:text-7xl font-display font-bold text-balance leading-tight">
-            Creating your <span className="text-gradient">app</span>
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto text-pretty">
-            Your application would be ready soon.
-          </p>
-          <div className="flex justify-center gap-4">
-            <Button 
-              size="lg"
-              onClick={onPleaseWait}
-              className="btn-gradient px-8 py-4 text-lg font-semibold hover:-translate-y-0.5 transition-all duration-200"
-              aria-live="polite"
+          <div className="aspect-video rounded-2xl overflow-hidden shadow-soft">
+            <video
+              className="w-full h-full object-cover"
+              poster="https://images.pexels.com/photos/7391006/pexels-photo-7391006.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              autoPlay
+              loop
+              muted
+              playsInline
             >
-              Please Wait
-            </Button>
-          </div>
-          <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-            <div>
-              Time elapsed: <span className="font-medium tabular-nums text-foreground">{formatted}</span>
-            </div>
-            <div>
-              Coins: <span className="font-medium tabular-nums text-foreground">{count}</span>
-            </div>
-          </div>
-          <div className="flex justify-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => { resetTimer(); resetCount(); toast('Reset complete') }}>
-              Reset
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => { inc(); toast('Coin added') }}>
-              Add Coin
-            </Button>
+              <source src="https://videos.pexels.com/video-files/7578549/7578549-hd_1920_1080_25fps.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
-        <footer className="absolute bottom-8 text-center text-muted-foreground/80">
-          <p>Powered by Cloudflare</p>
-        </footer>
-        <Toaster richColors closeButton />
       </div>
-    </AppLayout>
-  )
+    </section>
+  );
+}
+function KeyBenefitsSection() {
+  const benefits = [
+    { icon: Cpu, title: 'Workflow Automation', description: 'Automate repetitive tasks with unparalleled precision.' },
+    { icon: Check, title: 'Cost Efficiency', description: 'Reduce operational costs and increase your bottom line.' },
+    { icon: ShieldCheck, title: 'Enhanced Safety', description: 'Eliminate human error in hazardous environments.' },
+  ];
+  return (
+    <section className="py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="text-3xl md:text-4xl font-semibold">Core Advantages of Astra</h2>
+        </div>
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {benefits.map((benefit, index) => (
+            <div key={index} className="text-center p-8 border rounded-2xl shadow-sm dark:border-slate-800">
+              <div className="flex justify-center items-center mb-4">
+                <div className="p-4 bg-sky-100 dark:bg-sky-900/50 rounded-full">
+                  <benefit.icon className="h-8 w-8 text-sky-500" />
+                </div>
+              </div>
+              <h3 className="text-xl font-semibold">{benefit.title}</h3>
+              <p className="mt-2 text-muted-foreground">{benefit.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+export function HomePage() {
+  const [isDemoModalOpen, setDemoModalOpen] = useState(false);
+  const handleBuyNowClick = () => {
+    document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+  };
+  return (
+    <div className="bg-background text-foreground">
+      <ThemeToggle className="fixed top-4 right-4" />
+      <main>
+        <Hero onBookDemo={() => setDemoModalOpen(true)} onBuyNow={handleBuyNowClick} />
+        <StoryVisionSection />
+        <ProductShowcase />
+        <KeyBenefitsSection />
+        <div id="pricing">
+          <PricingTable />
+        </div>
+        <Testimonials />
+      </main>
+      <Footer />
+      <DemoModal isOpen={isDemoModalOpen} onClose={() => setDemoModalOpen(false)} />
+      <Toaster richColors closeButton />
+    </div>
+  );
 }
