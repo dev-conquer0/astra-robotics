@@ -1,6 +1,6 @@
 # Astra Robotics
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/dev-conquer0/astra-robotics)
 
 A premium, cinematic marketing website for a cutting-edge humanoid robotics company. This site showcases futuristic visuals, interactive product demonstrations, and seamless user experiences to highlight Astra Robotics' innovative solutions in home assistance and industrial automation.
 
@@ -126,7 +126,7 @@ This bundles the frontend assets and deploys the Worker. Your site will be live 
 
 For custom domains or advanced configuration, edit `wrangler.jsonc` (e.g., add environment variables or bindings).
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/dev-conquer0/astra-robotics)
 
 ## Contributing
 
